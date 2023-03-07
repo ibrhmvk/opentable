@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
 import validator from "validator"
+import bcrypt from "bcrypt"
 
 const prisma = new PrismaClient()
 
@@ -66,9 +67,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 "error": "You already have an account. Please Log In"
             })
         }
+        const hashedPassword = await bcrypt.hash(password, 10)
+
+        const newUser = await prisma.user.create({
+            data: {
+                first_name: firstName,
+                last_name: lastName,
+                password: hashedPassword,
+                email,
+                city,
+                phone
+            }
+        })
 
         return res.status(200).json({
-            result: "body"
+            result: newUser
         })
     }
 }
