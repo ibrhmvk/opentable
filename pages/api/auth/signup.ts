@@ -93,4 +93,5 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             result: jwt
         })
     }
+    return res.status(404).json("Unknown endpoint")
 }
