@@ -90,7 +90,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             .sign(secret)
 
         return res.status(200).json({
-            result: jwt
+            token: jwt
         })
     }
     return res.status(404).json("Unknown endpoint")

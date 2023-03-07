@@ -45,15 +45,15 @@ export default async function SignIn(req: NextApiRequest, res: NextApiResponse) 
             res.status(401).json({
                 error: "You don't have any existing account. Please create an account"
             })
+        } else {
+            const isMatch = await bcrypt.compare(password, existingUser.password)
+            if (!isMatch) {
+                return res.status(401).json({
+                    error: "Invalid Password"
+                })
+            }
         }
 
-        const isMatch = await bcrypt.compare(password, existingUser?.password)
-        
-        if (!isMatch) {
-            return res.status(401).json({
-                error: "Invalid Password"
-            })
-        }
         const secret = new TextEncoder().encode(process.env.JWT_SIGN)
         const alg = 'HS256'
 
@@ -63,7 +63,7 @@ export default async function SignIn(req: NextApiRequest, res: NextApiResponse) 
             .sign(secret)
 
         return res.status(200).json({
-            result: jwt
+            token: jwt
         })
     }
     return res.status(404).json("Unknown endpoint")
