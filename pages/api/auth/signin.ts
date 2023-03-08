@@ -4,9 +4,6 @@ import validator from "validator"
 import bcrypt from "bcrypt"
 import * as jose from 'jose'
 
-
-
-
 const prisma = new PrismaClient()
 
 export default async function SignIn(req: NextApiRequest, res: NextApiResponse) {
