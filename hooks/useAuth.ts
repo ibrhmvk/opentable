@@ -14,7 +14,7 @@ const useAuth = () => {
         { email: string, password: string }) => {
         try {
             const response = await axios.post(
-                "http://localhost:3000/api/auth/signin", {
+                "http://localhost:3001/api/auth/signin", {
                 email,
                 password
             })
