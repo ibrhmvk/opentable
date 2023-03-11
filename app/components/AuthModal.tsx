@@ -1,10 +1,9 @@
 "use client"
 
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { useEffect, useState } from 'react';
+import useAuth from '../../hooks/useAuth';
 import AuthModalInputs from './AuthModalInputs';
 
 const style = {
@@ -31,7 +30,7 @@ export default function AuthModal({ isSignUp }: { isSignUp?: boolean }) {
         password: ''
     })
     const [disabled, setIsDisabled] = useState(true)
-
+    const { signIn, signUp } = useAuth()
     useEffect(() => {
         if (!isSignUp) {
             if (input.email && input.password) {
@@ -61,7 +60,23 @@ export default function AuthModal({ isSignUp }: { isSignUp?: boolean }) {
     const renderContent = (loginContent: string, signUpContent: string) => {
         return isSignUp ? signUpContent : loginContent
     }
-
+    const handleClick = () => {
+        if (!isSignUp) {
+            signIn({
+                email: input.email,
+                password: input.password
+            })
+        } else {
+            signUp({
+                email: input.email,
+                password: input.password,
+                firstName: input.firstName,
+                lastName: input.lastName,
+                city: input.city,
+                phone: input.phone
+            })
+        }
+    }
     return (
         <div>
             <button
@@ -92,7 +107,8 @@ export default function AuthModal({ isSignUp }: { isSignUp?: boolean }) {
                         <AuthModalInputs inputs={input} handleChangeInput={handleChangeInput} isSignUp={isSignUp} />
                         <button
                             className="uppercase bg-red-600 w-full text-white p-3 rounded text-sm mb-5 disabled:bg-gray-400"
-                            disabled={disabled}>
+                            disabled={disabled}
+                            onClick={handleClick}>
                             {renderContent("Log In", "Create Account")}
                         </button>
                     </div>
