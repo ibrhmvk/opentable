@@ -115,7 +115,6 @@ export default function AuthModal({ isSignUp }: { isSignUp?: boolean }) {
                                         "Log Into Your Account",
                                         "Create Your OpenTable Account"
                                     )}
-                                    <p>{data?.firstName} {data?.lastName}</p>
                                 </h2>
                             </div>
                             <AuthModalInputs inputs={input} handleChangeInput={handleChangeInput} isSignUp={isSignUp} />

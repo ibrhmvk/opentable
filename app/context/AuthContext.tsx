@@ -24,7 +24,7 @@ interface AuthState extends State {
 }
 
 export const AuthenticationContext = createContext<AuthState>({
-    loading: false,
+    loading: true,
     data: null,
     error: null,
     setAuthState: () => { }
