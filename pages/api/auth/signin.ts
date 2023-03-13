@@ -60,7 +60,7 @@ export default async function SignIn(req: NextApiRequest, res: NextApiResponse) 
             .setExpirationTime('24h')
             .sign(secret)
 
-        setCookie('signin-jwt', token, { req, res, maxAge: 60 * 6 * 24 })
+        setCookie('jwt', token, { req, res, maxAge: 60 * 6 * 24 })
 
         return res.status(200).json({
             id: existingUser?.id,

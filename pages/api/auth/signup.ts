@@ -90,7 +90,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             .setExpirationTime('24h')
             .sign(secret)
 
-        setCookie('signup-jwt', token, { req, res, maxAge: 60 * 6 * 24 })
+        setCookie('jwt', token, { req, res, maxAge: 60 * 6 * 24 })
 
         return res.status(200).json({
             id: newUser.id,

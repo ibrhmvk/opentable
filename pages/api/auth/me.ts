@@ -33,8 +33,19 @@ export default async function Me(req: NextApiRequest, res: NextApiResponse) {
             }
         })
 
+        if (!user) {
+            return res.status(401).json({
+                errorMessage: "User not found"
+            })
+        }
+
         return res.status(200).json({
-            email: user
+            id: user.id,
+            firstName: user.first_name,
+            lastName: user.last_name,
+            email: user.email,
+            phone: user.phone,
+            city: user.city
         })
     }
     return res.status(404).json("Unknown endpoint")

@@ -41,7 +41,7 @@ const useAuth = () => {
             })
         }
     }
-    const signUp = async ({ email, password, firstName, lastName, phone, city }: inputProps,  handleClose: () => void) => {
+    const signUp = async ({ email, password, firstName, lastName, phone, city }: inputProps, handleClose: () => void) => {
         setAuthState({
             loading: true,
             data: null,
@@ -71,10 +71,10 @@ const useAuth = () => {
             })
         }
     }
-
     return {
         signIn,
-        signUp
+        signUp,
+
     }
 }
 
