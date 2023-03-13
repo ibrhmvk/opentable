@@ -1,6 +1,7 @@
 import axios from "axios"
 import { useContext } from "react"
 import { AuthenticationContext } from "../app/context/AuthContext";
+
 interface inputProps {
     firstName: string;
     lastName: string;
@@ -9,7 +10,6 @@ interface inputProps {
     city: string;
     password: string;
 }
-
 
 const useAuth = () => {
     const { loading, data, error, setAuthState } = useContext(AuthenticationContext)
@@ -41,7 +41,12 @@ const useAuth = () => {
             })
         }
     }
-    const signUp = async ({ email, password, firstName, lastName, phone, city }: inputProps) => {
+    const signUp = async ({ email, password, firstName, lastName, phone, city }: inputProps,  handleClose: () => void) => {
+        setAuthState({
+            loading: true,
+            data: null,
+            error: null
+        })
         try {
             const response = await axios.post(
                 "http://localhost:3000/api/auth/signup", {
@@ -52,9 +57,18 @@ const useAuth = () => {
                 phone,
                 city
             })
-            console.log(response)
-        } catch (error) {
-            console.log(error)
+            setAuthState({
+                loading: false,
+                data: response.data,
+                error: null
+            })
+            handleClose()
+        } catch (error: any) {
+            setAuthState({
+                loading: false,
+                data: null,
+                error: error.response.data.error
+            })
         }
     }
 
@@ -62,7 +76,6 @@ const useAuth = () => {
         signIn,
         signUp
     }
-
 }
 
 export default useAuth

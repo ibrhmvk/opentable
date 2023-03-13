@@ -23,7 +23,10 @@ export default function AuthModal({ isSignUp }: { isSignUp?: boolean }) {
     const { loading, error, data, setAuthState } = useContext(AuthenticationContext)
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    const handleClose = () => {
+        setOpen(false),
+            setAuthState(prev => ({ ...prev, error: null }))
+    };
     const [input, setInput] = useState({
         firstName: '',
         lastName: '',
@@ -68,7 +71,7 @@ export default function AuthModal({ isSignUp }: { isSignUp?: boolean }) {
             signIn({
                 email: input.email,
                 password: input.password
-            },handleClose)
+            }, handleClose)
         } else {
             signUp({
                 email: input.email,
@@ -77,7 +80,7 @@ export default function AuthModal({ isSignUp }: { isSignUp?: boolean }) {
                 lastName: input.lastName,
                 city: input.city,
                 phone: input.phone
-            })
+            }, handleClose)
         }
     }
     return (
@@ -96,12 +99,12 @@ export default function AuthModal({ isSignUp }: { isSignUp?: boolean }) {
             >
                 <Box sx={style}>
                     {loading ?
-                        <div className='py-24 flex justify-center px-2 h-[330px]'>
+                        <div className='py-24 flex justify-center px-2 h-[430px]'>
                             <CircularProgress />
                         </div>
                         :
-                        <div className="p-2 h-[330px]">
-                            {error && <Alert severity="error" className=' mb-3'>{error}</Alert>}
+                        <div className="p-2 h-[430px]">
+                            {!isSignUp ? error ? <Alert severity="error" className=' mb-3'>{error}</Alert> : null : error ? <Alert severity="error" className=' mb-3'>{error}</Alert> : null}
 
                             <div className='border-b-2 mb-2'>
                                 <p className="text-sm text-center font-bold mb-2 uppercase">{renderContent('Log In', 'Create Account')}</p>
