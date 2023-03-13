@@ -1,9 +1,11 @@
 "use client"
 
+import { Alert, CircularProgress } from '@mui/material';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import useAuth from '../../hooks/useAuth';
+import { AuthenticationContext } from '../context/AuthContext';
 import AuthModalInputs from './AuthModalInputs';
 
 const style = {
@@ -18,6 +20,7 @@ const style = {
 };
 
 export default function AuthModal({ isSignUp }: { isSignUp?: boolean }) {
+    const { loading, error, data, setAuthState } = useContext(AuthenticationContext)
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -65,7 +68,7 @@ export default function AuthModal({ isSignUp }: { isSignUp?: boolean }) {
             signIn({
                 email: input.email,
                 password: input.password
-            })
+            },handleClose)
         } else {
             signUp({
                 email: input.email,
@@ -92,26 +95,33 @@ export default function AuthModal({ isSignUp }: { isSignUp?: boolean }) {
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style}>
-                    <div className="p-2 h-[330px]">
-                        <div className='border-b-2 mb-2'>
-                            <p className="text-sm text-center font-bold mb-2 uppercase">{renderContent('Log In', 'Create Account')}</p>
+                    {loading ?
+                        <div className='py-24 flex justify-center px-2 h-[330px]'>
+                            <CircularProgress />
                         </div>
-                        <div className="m-auto">
-                            <h2 className="text-2xl font-light text-center">
-                                {renderContent(
-                                    "Log Into Your Account",
-                                    "Create Your OpenTable Account"
-                                )}
-                            </h2>
-                        </div>
-                        <AuthModalInputs inputs={input} handleChangeInput={handleChangeInput} isSignUp={isSignUp} />
-                        <button
-                            className="uppercase bg-red-600 w-full text-white p-3 rounded text-sm mb-5 disabled:bg-gray-400"
-                            disabled={disabled}
-                            onClick={handleClick}>
-                            {renderContent("Log In", "Create Account")}
-                        </button>
-                    </div>
+                        :
+                        <div className="p-2 h-[330px]">
+                            {error && <Alert severity="error" className=' mb-3'>{error}</Alert>}
+
+                            <div className='border-b-2 mb-2'>
+                                <p className="text-sm text-center font-bold mb-2 uppercase">{renderContent('Log In', 'Create Account')}</p>
+                            </div>
+                            <div className="m-auto">
+                                <h2 className="text-2xl font-light text-center">
+                                    {renderContent(
+                                        "Log Into Your Account",
+                                        "Create Your OpenTable Account"
+                                    )}
+                                </h2>
+                            </div>
+                            <AuthModalInputs inputs={input} handleChangeInput={handleChangeInput} isSignUp={isSignUp} />
+                            <button
+                                className="uppercase bg-red-600 w-full text-white p-3 rounded text-sm mb-5 disabled:bg-gray-400"
+                                disabled={disabled}
+                                onClick={handleClick}>
+                                {renderContent("Log In", "Create Account")}
+                            </button>
+                        </div>}
                 </Box>
             </Modal>
         </div>
