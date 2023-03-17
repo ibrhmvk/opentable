@@ -98,7 +98,7 @@ model Booking {
   booker_request    String
   restaurant_id     Int
   restaurant        Restaurant         @relation(fields: [restaurant_id], references: [id])
-  bookings          BookingsOnTables[]
+  tables            BookingsOnTables[]
   created_at        DateTime           @default(now())
   updated_at        DateTime           @updatedAt
 }
@@ -108,7 +108,7 @@ model Table {
   seats         Int
   restaurant_id Int
   restaurant    Restaurant         @relation(fields: [restaurant_id], references: [id])
-  tables        BookingsOnTables[]
+  bookings      BookingsOnTables[]
   created_at    DateTime           @default(now())
   updated_at    DateTime           @updatedAt
 }
