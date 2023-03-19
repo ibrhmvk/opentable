@@ -40,8 +40,20 @@ export default async function Availability(req: NextApiRequest, res: NextApiResp
             tables: true
         }
     })
+
+    const bookingtableObj: { [key: string]: { [key: string]: true } } = {}
+    bookings.forEach(booking => {
+        bookingtableObj[booking.booking_time.toISOString()] = booking.tables.reduce((obj, table) => {
+            return {
+                ...obj,
+                [table.table_id]: true
+            }
+        }, {})
+    })
+
     return res.json({
         searchTimes,
-        bookings
+        bookings,
+        bookingtableObj
     })
 }
