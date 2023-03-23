@@ -51,9 +51,34 @@ export default async function Availability(req: NextApiRequest, res: NextApiResp
         }, {})
     })
 
+    const restaurant = await prisma.restaurant.findUnique({
+        where: {
+            slug
+        }
+        , select: {
+            tables: true
+        }
+    })
+
+    if (!restaurant) {
+        return res.status(400).json({
+            errorMessage: "Invalid data provided"
+        })
+    }
+    const tables = restaurant.tables
+
+    const searchTimeWithTables = searchTimes.map(serachTime => {
+        return {
+            date : new Date(`${day}T${serachTime}`),
+            time : serachTime,
+            tables
+        }
+    })
+
     return res.json({
         searchTimes,
         bookings,
-        bookingtableObj
+        bookingtableObj,
+        searchTimeWithTables
     })
 }
